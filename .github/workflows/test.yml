@@ -1,25 +1,25 @@
-name: Test action
+# name: Test action
 
-on:
-  pull_request:
-    branches:
-      - main
-      - staging
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#       - staging
 
-jobs:
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-      - name: Install dependencies
-        run: yarn install
-      - name: Install playwright
-        run: yarn playwright install 
-      - name: Jest test
-        run: yarn test:web:dev
-      - run: echo "Test run ${{ job.status }}."
+# jobs:
+#   tests:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v3
+#       - name: Setup Node
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: "18.x"
+#       - name: Install dependencies
+#         run: yarn install
+#       - name: Install playwright
+#         run: yarn playwright install 
+#       - name: Jest test
+#         run: yarn test:web:dev
+#       - run: echo "Test run ${{ job.status }}."

@@ -1,28 +1,28 @@
-name: Manage EAS Builds
+# name: Manage EAS Builds
 
-on:
-  schedule:
-    - cron: '0 0 * * *' # Runs daily at midnight UTC
+# on:
+#   schedule:
+#     - cron: '0 0 * * *' # Runs daily at midnight UTC
 
-jobs:
-  manage-builds:
-    runs-on: ubuntu-latest
+# jobs:
+#   manage-builds:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
+#     steps:
+#       - uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: "18.x"
 
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
+#       - name: Install EAS CLI
+#         run: npm install -g eas-cli
 
-      - name: Log in to EAS
-        run: eas whoami
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+#       - name: Log in to EAS
+#         run: eas whoami
+#         env:
+#           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Clean up old builds
-        run: node scripts/manageBuilds.js
+#       - name: Clean up old builds
+#         run: node scripts/manageBuilds.js
