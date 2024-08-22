@@ -32,6 +32,11 @@ on:
         required: false
         type: string
         default: ""
+  push:
+    branches:
+      - main
+      - staging
+      - dev
 env:
   ENV_FILE_DEVELOP: ${{ vars.ENV_FILE_DEVELOP }}
   ENV_FILE_STAGING: ${{ vars.ENV_FILE_STAGING }}
