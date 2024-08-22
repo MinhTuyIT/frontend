@@ -1,12 +1,11 @@
 {
   "expo": {
-    "owner": "probsteinauctions",
-    "name": "frontend",
-    "slug": "frontend",
+    "owner": "goldfishdevs",
+    "name": "probstein",
+    "slug": "probstein",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "scheme": "probsteinauctions",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
