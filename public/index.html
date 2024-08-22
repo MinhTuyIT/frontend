@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="%LANG_ISO_CODE%">
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>%WEB_TITLE%</title>
+    <script src="https://cdn.branch.io/branch-latest.min.js"></script>
+   <script>
+    // Initialize Branch
+    branch.init('key_test_krlLOOeVVh6al5f4fUE9EnlgEvjWsmZM', function (err, data) {
+        if (err) {
+          console.error('Branch initialization error:', err);
+          return;
+        }
+      if (data.data_parsed['+clicked_branch_link']) {
+        const type = data.data_parsed['~feature'];
+        switch (type) {
+          case "forgot-password":
+            window.location.href = `/change-password?user_name=${data.data_parsed['user_name']}&confirmation_code=${data.data_parsed['confirmation_code']}`;
+            break;
+          case "complete-account":
+            window.location.href = `/complete-account?user_name=${data.data_parsed['username']}&otpCode=${data.data_parsed['otpCode']}`;
+            break;
+          default:
+            break;
+        }
+      }
+      });
+  </script>
+    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
+    <style id="expo-reset">
+      /* These styles make the body full-height */
+      html,
+      body {
+        height: 100%;
+      }
+      /* These styles disable body scrolling if you are using <ScrollView> */
+      body {
+        overflow: hidden;
+      }
+      /* These styles make the root element full-height */
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- The root element for your Expo app. -->
+    <div id="root"></div>
+  </body>
+</html>

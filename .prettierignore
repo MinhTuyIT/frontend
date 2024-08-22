@@ -1,0 +1,7 @@
+build
+node_modules
+.github
+*.json
+graphql
+generated
+public

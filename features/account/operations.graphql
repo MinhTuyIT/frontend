@@ -1,0 +1,103 @@
+mutation AccountManagementUpdateMe($input: UpdateMeInput!) {
+  updateMe(input: $input) {
+    lastName
+    firstName
+    group
+    consignor {
+      secondaryEmail
+      phone
+    }
+  }
+}
+
+fragment PayoutMethodDetail on PayoutMethodDetail {
+  email
+  bankName
+  accountNumber
+  accountType
+  routingNumber
+  bankAddress
+}
+
+fragment PayoutMethodInfo on PayoutMethod {
+  type
+  detail {
+    ...PayoutMethodDetail
+  }
+  id
+}
+
+query AccountManagementListMyPayoutMethods(
+  $limit: Int
+  $start: Int
+  $orderBy: OrderByInput
+) {
+  listMyPayoutMethods(limit: $limit, start: $start, orderBy: $orderBy) {
+    edges {
+      node {
+        ...PayoutMethodInfo
+      }
+    }
+  }
+}
+
+query AccountManagementGetPayoutMethod($getPayoutMethodId: ID!) {
+  getPayoutMethod(id: $getPayoutMethodId) {
+    ...PayoutMethodInfo
+  }
+}
+
+mutation AccountManagementCreatePayoutMethod($input: CreatePayoutMethodInput!) {
+  createPayoutMethod(input: $input) {
+    ...PayoutMethodInfo
+  }
+}
+
+mutation AccountManagementUpdatePayoutMethod($input: UpdatePayoutMethodInput!) {
+  updatePayoutMethod(input: $input) {
+    ...PayoutMethodInfo
+  }
+}
+
+mutation AccountManagementRemovePayoutMethod($input: RemovePayoutMethodInput!) {
+  removePayoutMethod(input: $input) {
+    ...PayoutMethodInfo
+  }
+}
+
+fragment AccountManagementStripePaymentMethodDetail on StripePaymentMethodDetail {
+  brand
+  fingerprint
+  last4
+  createdAt
+  expMonth
+  expYear
+  paymentMethodId
+  setupIntentId
+}
+
+fragment AccountManagementPaymentMethod on PaymentMethod {
+  id
+  methodType
+  userId
+  isDefault
+  details {
+    ...AccountManagementStripePaymentMethodDetail
+  }
+}
+
+query AccountManagementListMyPaymentMethods(
+  $orderBy: OrderByInput
+  $start: Int
+  $limit: Int
+) {
+  listMyPaymentMethods(orderBy: $orderBy, start: $start, limit: $limit) {
+    edges {
+      cursor
+      node {
+        ...AccountManagementPaymentMethod
+      }
+    }
+    totalEdges
+  }
+}

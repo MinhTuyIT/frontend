@@ -1,0 +1,52 @@
+/* Style the input field */
+.custom-input {
+    width: 96%;
+    border-radius: 5px;
+    border-color: #E7E7E7 !important;
+    border-style: solid;
+    font-size: 16px;
+    border-radius: 9px;
+    border-width: 2px;
+    font-size: medium;
+    padding-left: 15px;
+    font-family: "Cairo-Regular";
+    background-color: #FBFBFB;
+    
+}
+
+.custom-input:focus {
+    border-color: #005a54 !important;
+    outline: none;
+}
+
+
+/* Style the autocomplete dropdown */
+.pac-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 9px;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+    margin-top: 2px;
+}
+
+/* Style individual items in the dropdown */
+.pac-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.pac-item:hover {
+    background-color: #dff0f0;
+}
+
+/* Style the highlighted text in the dropdown */
+.pac-item-query {
+    font-weight: bold;
+    color: #333;
+}
+
+.pac-container:after {
+    content: none !important;
+}

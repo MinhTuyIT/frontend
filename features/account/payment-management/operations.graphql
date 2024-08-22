@@ -1,0 +1,65 @@
+fragment PaymentManagementStripePaymentMethodDetail on StripePaymentMethodDetail {
+  brand
+  fingerprint
+  last4
+  createdAt
+  expMonth
+  expYear
+  paymentMethodId
+  setupIntentId
+}
+
+fragment PaymentManagementPaymentMethod on PaymentMethod {
+  id
+  methodType
+  userId
+  isDefault
+  details {
+    ...PaymentManagementStripePaymentMethodDetail
+  }
+}
+
+query PaymentManagementListMyPaymentMethods(
+  $orderBy: OrderByInput
+  $start: Int
+  $limit: Int
+) {
+  listMyPaymentMethods(orderBy: $orderBy, start: $start, limit: $limit) {
+    edges {
+      cursor
+      node {
+        ...PaymentManagementPaymentMethod
+      }
+    }
+    totalEdges
+  }
+}
+
+mutation CreateSetupIntent {
+  createSetupIntent {
+    customer
+    ephemeralKey
+    setupIntent
+  }
+}
+
+mutation PaymentManagementRemovePaymentMethod(
+  $input: RemovePaymentMethodInput!
+) {
+  removePaymentMethod(input: $input) {
+    ...PaymentManagementPaymentMethod
+  }
+}
+
+mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {
+  createPaymentMethod(input: $input) {
+    isDefault
+    id
+    methodType
+    userId
+    details {
+      setupIntentId
+      brand
+    }
+  }
+}

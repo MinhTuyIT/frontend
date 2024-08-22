@@ -1,0 +1,44 @@
+diff --git a/node_modules/@apollo/client/utilities/globals/index.d.ts b/node_modules/@apollo/client/utilities/globals/index.d.ts
+index 8414142..157d556 100644
+--- a/node_modules/@apollo/client/utilities/globals/index.d.ts
++++ b/node_modules/@apollo/client/utilities/globals/index.d.ts
+@@ -1,11 +1,11 @@
+-import { invariant, newInvariantError, InvariantError } from "./invariantWrappers.js";
+-export { maybe } from "./maybe.js";
++import { InvariantError, invariant, newInvariantError } from "./invariantWrappers.js";
+ export { default as global } from "./global.js";
+-export { invariant, newInvariantError, InvariantError };
++export { maybe } from "./maybe.js";
++export { InvariantError, invariant, newInvariantError };
+ /**
+  * @deprecated we do not use this internally anymore,
+  * it is just exported for backwards compatibility
+  */
+ export declare const DEV: boolean;
+-export { DEV as __DEV__ };
++// export { DEV as __DEV__ };
+ //# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@apollo/client/utilities/globals/index.js b/node_modules/@apollo/client/utilities/globals/index.js
+index a62ebd2..ac4010f 100644
+--- a/node_modules/@apollo/client/utilities/globals/index.js
++++ b/node_modules/@apollo/client/utilities/globals/index.js
+@@ -1,7 +1,7 @@
+-import { invariant, newInvariantError, InvariantError, } from "./invariantWrappers.js";
+-export { maybe } from "./maybe.js";
++import { InvariantError, invariant, newInvariantError, } from "./invariantWrappers.js";
+ export { default as global } from "./global.js";
+-export { invariant, newInvariantError, InvariantError };
++export { maybe } from "./maybe.js";
++export { InvariantError, invariant, newInvariantError };
+ /**
+  * @deprecated we do not use this internally anymore,
+  * it is just exported for backwards compatibility
+@@ -10,5 +10,5 @@ export { invariant, newInvariantError, InvariantError };
+ // so we have to write it out here
+ // @ts-ignore
+ export var DEV = globalThis.__DEV__ !== false;
+-export { DEV as __DEV__ };
++// export { DEV as __DEV__ };
+ //# sourceMappingURL=index.js.map
+\ No newline at end of file

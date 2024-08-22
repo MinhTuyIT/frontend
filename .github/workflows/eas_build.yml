@@ -1,0 +1,111 @@
+name: EAS Build|Update
+
+on:
+  check_run:
+    types: [ completed, completed, requested_action]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose an environment that you want to build or update"
+        required: true
+        type: choice
+        default: "develop"
+        options:
+          - "develop"
+          - "staging"
+          - "production"
+      git_ref:
+        description: "The branch, tag or SHA to checkout"
+        required: true
+        default: ""
+        type: string
+      eas_type:
+        description: "Let's choose the type to update or build via EAS"
+        required: true
+        type: choice
+        default: "update"
+        options:
+          - "update"
+          - "build"
+      message_update:
+        description: "Add a new message for this update"
+        required: false
+        type: string
+        default: ""
+env:
+  ENV_FILE_DEVELOP: ${{ vars.ENV_FILE_DEVELOP }}
+  ENV_FILE_STAGING: ${{ vars.ENV_FILE_STAGING }}
+  ENV_FILE_PRODUCTION: ${{ vars.ENV_FILE_PRODUCTION }}
+jobs:
+  build:
+    name: Install and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Checkout specified on this repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+      
+      - name: 🏗 Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: yarn
+
+      - name:  🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      # - name: Grant executable permissions to the eas-hooks
+      #   run:  chmod +x eas-hooks/*.sh
+      - name: 📦 Install dependencies and the lastest CLIs
+        run: |
+          yarn install
+          
+      - name: 🚀 Build on EAS
+        if: ${{ github.event.inputs.eas_type == 'build' }}
+        env: 
+          ENV: ${{ github.event.inputs.environment }}
+          ANDROID_MAP_KEY: ${{ vars.EXPO_PUBLIC_ANDROID_MAP_KEY }}
+          IOS_MAP_KEY: ${{ vars.EXPO_PUBLIC_IOS_MAP_KEY }}
+          WEB_MAP_KEY: ${{ vars.EXPO_PUBLIC_WEB_MAP_KEY }}
+        run: |
+          echo "🚀 Building the application for the $ENV environment"
+          if [ $ENV = 'production' ]; then
+            EXPO_PUBLIC_GRAPHQL_BASE_URL=${{ vars.EXPO_PUBLIC_GRAPHQL_BASE_URL }}
+            EXPO_PUBLIC_REGION=${{ vars.EXPO_PUBLIC_REGION }}
+            EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+            EXPO_PUBLIC_TESTING_URL=${{ vars.EXPO_PUBLIC_TESTING_URL }}
+            EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL }}
+            EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD }}
+            EXPO_PUBLIC_GOOGLE_API_KEY=${{ vars.EXPO_PUBLIC_GOOGLE_API_KEY }}
+          elif [ $ENV = 'staging' ]; then
+            EXPO_PUBLIC_GRAPHQL_BASE_URL=${{ vars.EXPO_PUBLIC_GRAPHQL_BASE_URL_STAGING }}
+            EXPO_PUBLIC_REGION=${{ vars.EXPO_PUBLIC_REGION_STAGING }}
+            EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY_STAGING }}
+            EXPO_PUBLIC_TESTING_URL=${{ vars.EXPO_PUBLIC_TESTING_URL_STAGING }}
+            EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL_STAGING }}
+            EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD_STAGING }}
+            EXPO_PUBLIC_GOOGLE_API_KEY=${{ vars.EXPO_PUBLIC_GOOGLE_API_KEY_STAGING }}
+            //_DEVELOP
+          else
+            EXPO_PUBLIC_GRAPHQL_BASE_URL=${{ vars.EXPO_PUBLIC_GRAPHQL_BASE_URL_DEVELOP }}
+            EXPO_PUBLIC_REGION=${{ vars.EXPO_PUBLIC_REGION_DEVELOP }}
+            EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY_DEVELOP }}
+            EXPO_PUBLIC_TESTING_URL=${{ vars.EXPO_PUBLIC_TESTING_URL_DEVELOP }}
+            EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL_DEVELOP }}
+            EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD_DEVELOP }}
+            EXPO_PUBLIC_GOOGLE_API_KEY=${{ vars.EXPO_PUBLIC_GOOGLE_API_KEY_DEVELOP }}
+          fi
+          ENV=$ENV \
+          EXPO_PUBLIC_GRAPHQL_BASE_URL=$EXPO_PUBLIC_GRAPHQL_BASE_URL \
+          EXPO_PUBLIC_REGION=$EXPO_PUBLIC_REGION \
+          EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=$EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY \
+          EXPO_PUBLIC_TESTING_URL=$EXPO_PUBLIC_TESTING_URL \
+          EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL=$EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL \
+          EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD=$EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD \
+          EXPO_PUBLIC_GOOGLE_API_KEY=$EXPO_PUBLIC_GOOGLE_API_KEY \
+          CI=true eas build --profile=$ENV -p all  --non-interactive
+          echo "Have been successfully deployed! 🙌👏"

@@ -1,0 +1,90 @@
+fragment UserManagementCognitoUserAttribute on CognitoUserAttribute {
+  Name
+  Value
+}
+
+fragment UserManagementCognitoUser on CognitoUser {
+  Username
+  Enabled
+  UserStatus
+  UserAttributes {
+    ...UserManagementCognitoUserAttribute
+  }
+  Attributes {
+    ...UserManagementCognitoUserAttribute
+  }
+}
+
+fragment UserManagementCognitoGroup on CognitoGroup {
+  GroupName
+  UserPoolId
+  Description
+  RoleArn
+  Precedence
+  LastModifiedDate
+  CreationDate
+}
+
+fragment UserManagementUser on User {
+  id
+  phoneNumber
+  createdAt
+  updatedAt
+}
+
+fragment UserManagementDetailUser on User {
+  ...UserManagementUser
+  cognitoUser {
+    ...UserManagementCognitoUser
+  }
+  cognitoGroups {
+    ...UserManagementCognitoGroup
+  }
+}
+
+fragment UserManagementUserEdge on UserEdge {
+  cursor
+  node {
+    ...UserManagementUser
+  }
+}
+
+fragment UserManagementUserConnection on UserConnection {
+  edges {
+    ...UserManagementUserEdge
+  }
+  pageInfo {
+    hasNextPage
+    hasPreviousPage
+    startCursor
+    endCursor
+  }
+}
+
+query UserManagementGetUser($id: ID!) {
+  getUser(id: $id) {
+    ...UserManagementDetailUser
+  }
+}
+
+query UserManagementListCognitoGroups {
+  listCognitoGroups {
+    ...UserManagementCognitoGroup
+  }
+}
+
+mutation UserManagementAddUserToCognitoGroup(
+  $input: ModifyUserCognitoGroupsInput!
+) {
+  addUserToCognitoGroup(input: $input) {
+    ...UserManagementDetailUser
+  }
+}
+
+mutation UserManagementRemoveUserFromCognitoGroup(
+  $input: ModifyUserCognitoGroupsInput!
+) {
+  removeUserFromCognitoGroup(input: $input) {
+    ...UserManagementDetailUser
+  }
+}

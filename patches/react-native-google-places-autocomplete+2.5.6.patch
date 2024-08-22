@@ -1,0 +1,106 @@
+diff --git a/node_modules/react-native-google-places-autocomplete/GooglePlacesAutocomplete.d.ts b/node_modules/react-native-google-places-autocomplete/GooglePlacesAutocomplete.d.ts
+index 6f5a0bc..4b49d0d 100644
+--- a/node_modules/react-native-google-places-autocomplete/GooglePlacesAutocomplete.d.ts
++++ b/node_modules/react-native-google-places-autocomplete/GooglePlacesAutocomplete.d.ts
+@@ -411,6 +411,7 @@ interface GooglePlacesAutocompleteProps {
+   onPress?: (data: GooglePlaceData, detail: GooglePlaceDetail | null) => void;
+   onTimeout?: () => void;
+   placeholder: string;
++  defaultValue?: string;
+   predefinedPlaces?: Place[];
+   predefinedPlacesAlwaysVisible?: boolean;
+   preProcess?: (text: string) => string;
+diff --git a/node_modules/react-native-google-places-autocomplete/GooglePlacesAutocomplete.js b/node_modules/react-native-google-places-autocomplete/GooglePlacesAutocomplete.js
+index 99a2a13..a9b7319 100644
+--- a/node_modules/react-native-google-places-autocomplete/GooglePlacesAutocomplete.js
++++ b/node_modules/react-native-google-places-autocomplete/GooglePlacesAutocomplete.js
+@@ -4,25 +4,24 @@ import PropTypes from 'prop-types';
+ import Qs from 'qs';
+ import React, {
+   forwardRef,
+-  useMemo,
++  useCallback,
+   useEffect,
+   useImperativeHandle,
++  useMemo,
+   useRef,
+   useState,
+-  useCallback,
+ } from 'react';
+ import {
+   ActivityIndicator,
+   FlatList,
+   Image,
+-  Keyboard,
+   Platform,
+   Pressable,
+   ScrollView,
+   StyleSheet,
+   Text,
+   TextInput,
+-  View,
++  View
+ } from 'react-native';
+ 
+ const defaultStyles = {
+@@ -68,6 +67,15 @@ const defaultStyles = {
+     borderTopWidth: 0.5,
+   },
+   powered: {},
++  containerList:{
++    borderRadius: 10,
++    shadowColor: '#707070',
++    shadowOffset: { width: 0, height: 1 },
++    shadowOpacity: 0.3,
++    shadowRadius: 2,
++    elevation: 5,
++    backgroundColor:'#fff'
++  }
+ };
+ 
+ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
+@@ -150,7 +158,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
+     );
+   };
+ 
+-  const [stateText, setStateText] = useState('');
++  const [stateText, setStateText] = useState(props.defaultValue ||'');
+   const [dataSource, setDataSource] = useState(buildRowsFromResults([]));
+   const [listViewDisplayed, setListViewDisplayed] = useState(
+     props.listViewDisplayed === 'auto' ? false : props.listViewDisplayed,
+@@ -180,6 +188,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
+ 
+   useImperativeHandle(ref, () => ({
+     setAddressText: (address) => {
++      console.log("vaodofosdf");
+       setStateText(address);
+     },
+     getAddressText: () => stateText,
+@@ -264,7 +273,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
+         return;
+       }
+ 
+-      Keyboard.dismiss();
++      // Keyboard.dismiss();
+ 
+       _abortRequests();
+ 
+@@ -297,6 +306,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
+             _disableRowLoaders();
+ 
+             if (props.autoFillOnNotFound) {
++              console.log("rowData: ", rowData)
+               setStateText(_renderDescription(rowData));
+               delete rowData.isLoading;
+             }
+@@ -883,7 +893,9 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
+         </View>
+       )}
+       {props.inbetweenCompo}
+-      {_getFlatList()}
++      <View style={[defaultStyles.containerList, props.styles.containerList]}>
++        {_getFlatList()}
++      </View>
+       {props.children}
+     </View>
+   );

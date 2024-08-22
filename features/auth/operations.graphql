@@ -1,0 +1,118 @@
+fragment AuthCognitoGroup on CognitoGroup {
+  GroupName
+}
+
+fragment AuthAuthenticationResult on AuthenticationResult {
+  AccessToken
+  ExpiresIn
+  IdToken
+  RefreshToken
+  TokenType
+}
+
+fragment AuthConfirmSignInResult on ConfirmSignInResult {
+  data {
+    ...AuthAuthenticationResult
+  }
+  message
+}
+
+fragment AuthUser on User {
+  id
+  phoneNumber
+  cognitoGroups {
+    ...AuthCognitoGroup
+  }
+}
+
+mutation AuthSignIn($signInInput: SignInInput!) {
+  signIn(signInInput: $signInInput) {
+    ... on ConfirmSignInResult {
+      data {
+        ...AuthAuthenticationResult
+      }
+      message
+    }
+    ... on SignInResult {
+      data {
+        Session
+      }
+    }
+    ... on Message {
+      message
+    }
+  }
+}
+
+mutation AuthResendVerifyIdentifier($input: ResendOtpInput!) {
+  resendOTP(resendOtpInput: $input) {
+    data {
+      Session
+    }
+  }
+}
+
+mutation AuthConfirmSignIn($input: ConfirmSignInInput!) {
+  confirmSignIn(confirmSignInInput: $input) {
+    ... on ConfirmSignInResult {
+      ...AuthConfirmSignInResult
+    }
+    ... on SignInResult {
+      message
+      data {
+        Session
+      }
+    }
+    ... on Message {
+      message
+    }
+  }
+}
+
+mutation AuthSignOut {
+  signOut {
+    message
+  }
+}
+
+mutation AuthRefreshToken($refreshTokenInput: RefreshTokenInput!) {
+  refreshToken(refreshTokenInput: $refreshTokenInput) {
+    data {
+      ...AuthAuthenticationResult
+    }
+    message
+  }
+}
+
+query AuthMe {
+  me {
+    email
+    firstName
+    group
+    id
+    lastName
+    locale
+    middleName
+    username
+    consignor {
+      secondaryEmail
+      phone
+    }
+    isRegisteredBidder
+  }
+}
+
+mutation AuthSignup($signUpInput: SignUpInput!) {
+  signUp(signUpInput: $signUpInput) {
+    data {
+      ...AuthAuthenticationResult
+    }
+    message
+  }
+}
+
+mutation AuthCompleteAccount($input: CompleteAccountInput!) {
+  completeAccount(input: $input) {
+    message
+  }
+}

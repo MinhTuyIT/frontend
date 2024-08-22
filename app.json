@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "owner": "probsteinauctions",
+    "name": "frontend",
+    "slug": "frontend",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "probsteinauctions",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "This app uses your camera to take photos of your cards so that you can upload them into your collection.",
+          "photosPermission": "This app uses your Photo Library to find photos of your cards so that you can upload them into your collection.",
+          "microphonePermission": "This app uses your devices microphone to allow you to add commentary to your cards."
+        }
+      ],
+      "expo-font",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "organization": "probstein-auctions",
+          "project": "frontend"
+        }
+      ],
+      "expo-router",
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "DEFAULT"
+        }
+      ],
+      ["@config-plugins/detox"]
+    ]
+  }
+}

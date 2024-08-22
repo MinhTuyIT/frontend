@@ -1,0 +1,74 @@
+{
+  "cli": {
+    "version": ">= 7.2.0"
+  },
+  "build": {
+    "dev": {
+      "channel": "dev",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      // "ios": {
+      //   "provisioningProfilePath": "./profiles/probstein_dev_adhoc.mobileprovision"
+      // },
+      "env": {
+        "STAGE": "dev",
+        "PUPPETEER_SKIP_DOWNLOAD": "true"
+      }
+    },
+    "staging": {
+      "channel": "staging",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "STAGE": "staging",
+        "PUPPETEER_SKIP_DOWNLOAD": "true"
+      }
+    },
+    "production": {
+      "channel": "production",
+      "distribution": "internal",
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "STAGE": "production",
+        "PUPPETEER_SKIP_DOWNLOAD": "true"
+      }
+    }
+  },
+  "submit": {
+    "base": {
+      "android": {
+        "serviceAccountKeyPath": "./xxxxxxx.json"
+      },
+      "ios": {}
+    },
+    "dev": {
+      "extends": "base",
+      "ios": {
+        "ascAppId": "xxxxxxxxxxx"
+      },
+      "android": {
+        "track": "internal"
+      }
+    },
+    "staging": {
+      "extends": "base",
+      "ios": {},
+      "android": {
+        "track": "alpha"
+      }
+    },
+    "production": {
+      "extends": "base",
+      "ios": {},
+      "android": {
+        "track": "production"
+      }
+    }
+  }
+}

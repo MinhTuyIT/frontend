@@ -1,0 +1,37 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "moduleSuffixes": [
+      ".ios",
+      ".android",
+      ".native",
+      ".web",
+      ""
+    ],
+    "paths": {
+      "@/config/*": [
+        "config/*"
+      ],
+      "@/features/*": [
+        "features/*"
+      ],
+      "@/providers/*": [
+        "providers/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ],
+      "@/hooks/*": [
+        "hooks/*"
+      ],
+      "@/generated/*": [
+        "generated/*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+    }
+  },
+}

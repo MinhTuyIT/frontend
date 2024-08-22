@@ -1,0 +1,21 @@
+.phone-number-input {
+  border-width: 2px;
+  outline: none;
+  border-radius: 5px;
+  height: 44px;
+  border-color: #E7E7E7 !important;
+  padding: 0px;
+  border-style: solid;
+  padding-left: 5px;
+}
+
+.phone-number-input:focus {
+  border-color: #005a54 !important;
+}
+
+.phone-number-country {
+  height: 44px;
+  width: 100%;
+  border-radius: 3px;
+  padding-left: 5px;
+}

@@ -1,0 +1,38 @@
+fragment Address on Address {
+  id
+  address1
+  address2
+  city
+  country
+  state
+  zip
+}
+
+mutation AddressManagementCreateAddress($input: CreateAddressInput!) {
+  createAddress(input: $input) {
+    id
+  }
+}
+
+query AddressManagementListMyAddresses {
+  listMyAddresses {
+     ...Address
+  }
+}
+query AddressManagementGetAddress($getAddressId: ID!) {
+  getAddress(id: $getAddressId) {
+    ...Address
+  }
+}
+
+mutation AddressManagementUpdateAddress($input: UpdateAddressInput!) {
+  updateAddress(input: $input) {
+    ...Address
+  }
+}
+
+mutation AddressManagementRemoveAddress($input: RemoveAddressInput!) {
+  removeAddress(input: $input) {
+    ...Address
+  }
+}

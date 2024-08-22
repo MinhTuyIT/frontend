@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "buildCommand": "EXPO_NO_DOTENV=1 yarn expo export --platform web; mv ./dist/assets/node_modules/* ./dist/assets;",
+  "framework": null,
+  "outputDirectory": "dist",
+  "git": {
+    "deploymentEnabled": false
+  },
+  "github": {
+    "enabled": false
+  },
+  "routes": [
+    {
+      "src": "/bundles/(.*)",
+      "dest": "/bundles/$1"
+    },
+    {
+      "src": "/_expo/static/js/web/(.*)",
+      "dest": "/_expo/static/js/web/$1"
+    },
+    {
+      "src": "/assets/node_modules/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/public/(.*)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/public/favicon.ico"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
+}
