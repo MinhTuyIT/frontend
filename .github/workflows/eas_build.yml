@@ -68,49 +68,6 @@ jobs:
       - name: 📦 Install dependencies and the lastest CLIs
         run: |
           yarn install
-          
-      - name: 🚀 Build on EAS
-        if: ${{ github.event.inputs.eas_type == 'build' }}
-        env: 
-          ENV: ${{ github.event.inputs.environment }}
-          ANDROID_MAP_KEY: ${{ vars.EXPO_PUBLIC_ANDROID_MAP_KEY }}
-          IOS_MAP_KEY: ${{ vars.EXPO_PUBLIC_IOS_MAP_KEY }}
-          WEB_MAP_KEY: ${{ vars.EXPO_PUBLIC_WEB_MAP_KEY }}
-        run: |
-          echo "🚀 Building the application for the $ENV environment"
-          if [ $ENV = 'production' ]; then
-            EXPO_PUBLIC_GRAPHQL_BASE_URL=${{ vars.EXPO_PUBLIC_GRAPHQL_BASE_URL }}
-            EXPO_PUBLIC_REGION=${{ vars.EXPO_PUBLIC_REGION }}
-            EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
-            EXPO_PUBLIC_TESTING_URL=${{ vars.EXPO_PUBLIC_TESTING_URL }}
-            EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL }}
-            EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD }}
-            EXPO_PUBLIC_GOOGLE_API_KEY=${{ vars.EXPO_PUBLIC_GOOGLE_API_KEY }}
-          elif [ $ENV = 'staging' ]; then
-            EXPO_PUBLIC_GRAPHQL_BASE_URL=${{ vars.EXPO_PUBLIC_GRAPHQL_BASE_URL_STAGING }}
-            EXPO_PUBLIC_REGION=${{ vars.EXPO_PUBLIC_REGION_STAGING }}
-            EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY_STAGING }}
-            EXPO_PUBLIC_TESTING_URL=${{ vars.EXPO_PUBLIC_TESTING_URL_STAGING }}
-            EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL_STAGING }}
-            EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD_STAGING }}
-            EXPO_PUBLIC_GOOGLE_API_KEY=${{ vars.EXPO_PUBLIC_GOOGLE_API_KEY_STAGING }}
-            //_DEVELOP
-          else
-            EXPO_PUBLIC_GRAPHQL_BASE_URL=${{ vars.EXPO_PUBLIC_GRAPHQL_BASE_URL_DEVELOP }}
-            EXPO_PUBLIC_REGION=${{ vars.EXPO_PUBLIC_REGION_DEVELOP }}
-            EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY_DEVELOP }}
-            EXPO_PUBLIC_TESTING_URL=${{ vars.EXPO_PUBLIC_TESTING_URL_DEVELOP }}
-            EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL_DEVELOP }}
-            EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD=${{ vars.EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD_DEVELOP }}
-            EXPO_PUBLIC_GOOGLE_API_KEY=${{ vars.EXPO_PUBLIC_GOOGLE_API_KEY_DEVELOP }}
-          fi
-          ENV=$ENV \
-          EXPO_PUBLIC_GRAPHQL_BASE_URL=$EXPO_PUBLIC_GRAPHQL_BASE_URL \
-          EXPO_PUBLIC_REGION=$EXPO_PUBLIC_REGION \
-          EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=$EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY \
-          EXPO_PUBLIC_TESTING_URL=$EXPO_PUBLIC_TESTING_URL \
-          EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL=$EXPO_PUBLIC_TESTING_ACCOUNT_EMAIL \
-          EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD=$EXPO_PUBLIC_TESTING_ACCOUNT_PASSWORD \
-          EXPO_PUBLIC_GOOGLE_API_KEY=$EXPO_PUBLIC_GOOGLE_API_KEY \
-          CI=true eas build --profile=$ENV -p all  --non-interactive
-          echo "Have been successfully deployed! 🙌👏"
+      - name: Build on EAS
+        run: eas build --platform all --non-interactive --no-wait    
+      
